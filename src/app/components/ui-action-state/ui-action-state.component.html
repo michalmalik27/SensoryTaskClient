@@ -1,0 +1,13 @@
+
+<container-element [ngSwitch]="actionState.action">
+  <mat-card *ngSwitchCase="'inProcess'" color="primary">
+    {{ actionState.message }}
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </mat-card>
+  <mat-card *ngSwitchCase="'isCompleted'">
+    <ng-content></ng-content>
+  </mat-card>
+  <mat-card *ngSwitchCase="'isFailed'" color="warn">
+    Error: {{ actionState.message }}
+  </mat-card>
+</container-element>

@@ -1,15 +1,10 @@
-import {
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from 'src/app/services/data.service';
-import Person from '../../models/person';
 import { PersonDialogComponent } from '../person-dialog/person-dialog.component';
+import Person from '../../models/person';
+import { ActionState, ActionStates } from 'src/app/actionState';
 
 @Component({
   selector: 'app-persons',
@@ -18,9 +13,7 @@ import { PersonDialogComponent } from '../person-dialog/person-dialog.component'
 })
 export class PersonsComponent implements OnInit {
   constructor(private dataService: DataService, public dialog: MatDialog) {}
-  loaded: boolean = true;
-  @Output() selectedPeopleEvent = new EventEmitter<Person>();
-  clickedRows = new Set<Person>();
+  loadState!: ActionState;
 
   displayedColumns: string[] = [
     'personId',
@@ -30,19 +23,23 @@ export class PersonsComponent implements OnInit {
     'professionName',
     'action',
   ];
+
   dataSource: MatTableDataSource<Person> = new MatTableDataSource();
 
-  @ViewChild(MatTable, { static: true })
-  table!: MatTable<any>;
-
   ngOnInit() {
+    this.loadState = <ActionState>{action: ActionStates.INIT, message: ""};
     this.getPersons();
   }
 
   getPersons() {
+    this.loadState.action = ActionStates.IN_PROCESS;
+    this.loadState.message = "Load persons...";
+
     this.dataService.getPersons().subscribe((data) => {
       this.dataSource.data = data;
-      this.loaded = true;
+      this.loadState.action = ActionStates.IS_COMPLETED;
+      this.loadState.message = "";
+
     });
   }
 

@@ -1,4 +1,5 @@
-<div class="container text-center" *ngIf="loaded">
+<ui-action-state [actionState]="loadState">
+<div class="container text-center">
   <button mat-button (click)="addPerson()" mat-flat-button color="primary">
     Add Row
   </button>
@@ -50,3 +51,4 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 </div>
+</ui-action-state>
