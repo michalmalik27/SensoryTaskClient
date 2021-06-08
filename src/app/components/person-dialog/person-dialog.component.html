@@ -1,0 +1,86 @@
+<h1 mat-dialog-title>
+  <strong>{{ data.action }}</strong>
+</h1>
+<div mat-dialog-content>
+  <div *ngIf="data.action !== 'Delete'; else elseTemplate">
+    <div class="example-container">
+      <div class="form-container">
+        <form [formGroup]="personForm" (submit)="doAction()">
+          <mat-form-field class="form-field">
+            <mat-label>Id Number</mat-label>
+            <input matInput formControlName="idNumber" required />
+            <mat-error
+              *ngIf="
+                personForm.controls.idNumber.touched &&
+                personForm.controls.idNumber.invalid
+              "
+            >
+              <span *ngIf="personForm.controls.idNumber.errors?.required"
+                >This field is mandatory.</span
+              >
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="form-field">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" required />
+            <mat-error
+              *ngIf="
+                personForm.controls.firstName.touched &&
+                personForm.controls.firstName.invalid
+              "
+            >
+              <span *ngIf="personForm.controls.firstName.errors?.required"
+                >This field is mandatory.</span
+              >
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="form-field">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" required />
+            <mat-error
+              *ngIf="
+                personForm.controls.lastName.touched &&
+                personForm.controls.lastName.invalid
+              "
+            >
+              <span *ngIf="personForm.controls.lastName.errors?.required"
+                >This field is mandatory.</span
+              >
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="form-field">
+            <mat-label>Profession</mat-label>
+            <mat-select matInput formControlName="professionId" required>
+              <mat-option
+                *ngFor="let item of professions"
+                [value]="item.professionId"
+                >{{ item.professionName }}</mat-option
+              >
+            </mat-select>
+            <mat-error
+              *ngIf="
+                personForm.controls.professionId.touched &&
+                personForm.controls.professionId.invalid
+              "
+            >
+              <span *ngIf="personForm.controls.professionId.errors?.required"
+                >This field is mandatory.</span
+              >
+            </mat-error>
+          </mat-form-field>
+        </form>
+      </div>
+    </div>
+  </div>
+  <ng-template #elseTemplate>
+    Sure to delete details of
+    <b>{{ data.person?.lastName }} {{ data.person?.firstName }}</b
+    >?
+  </ng-template>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="doAction()">{{ data.action }}</button>
+  <button mat-button (click)="closeDialog()" mat-flat-button color="warn">
+    Cancel
+  </button>
+</div>

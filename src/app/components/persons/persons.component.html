@@ -1,0 +1,52 @@
+<div class="container text-center" *ngIf="loaded">
+  <button mat-button (click)="addPerson()" mat-flat-button color="primary">
+    Add Row
+  </button>
+
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    #mytable
+    class="my-table mat-elevation-z8"
+  >
+    <ng-container matColumnDef="personId">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let element">{{ element.personId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="idNumber">
+      <th mat-header-cell *matHeaderCellDef>Id Number</th>
+      <td mat-cell *matCellDef="let element">{{ element.idNumber }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef>First Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef>Last Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="professionName">
+      <th mat-header-cell *matHeaderCellDef>Profession</th>
+      <td mat-cell *matCellDef="let element">{{ element.professionName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element" class="action-link">
+        <button (click)="deletePerson(element)" mat-mini-fab color="warn">
+          <mat-icon>remove</mat-icon>
+        </button>
+        <button (click)="updatePerson(element)" mat-mini-fab color="primary">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
