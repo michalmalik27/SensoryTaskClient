@@ -40,9 +40,31 @@ export class PersonDialogComponent implements OnInit {
     });
 
     this.personForm = this.formBuilder.group({
-      idNumber: [this.data.person?.idNumber, [Validators.required]],
-      firstName: [this.data.person?.firstName, [Validators.required]],
-      lastName: [this.data.person?.lastName, [Validators.required]],
+      idNumber: [
+        this.data.person?.idNumber,
+        [
+          Validators.required,
+          Validators.minLength(9),
+          Validators.maxLength(9),
+          Validators.pattern(/^[\d]+$/i),
+        ],
+      ],
+      firstName: [
+        this.data.person?.firstName,
+        [
+          Validators.required,
+          Validators.pattern(/^[\u0590-\u05feA-Za-z-\s]+$/i),
+          Validators.maxLength(20),
+        ],
+      ],
+      lastName: [
+        this.data.person?.lastName,
+        [
+          Validators.required,
+          Validators.pattern(/^[\u0590-\u05feA-Za-z-\s]+$/i),
+          Validators.maxLength(20),
+        ],
+      ],
       professionId: [this.data.person?.professionId, [Validators.required]],
     });
   }
