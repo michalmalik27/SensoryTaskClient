@@ -9,22 +9,17 @@
           <mat-form-field class="form-field">
             <mat-label>Id Number</mat-label>
             <input matInput formControlName="idNumber" required />
-            <mat-error
-              *ngIf="
-                personForm.controls.idNumber.touched &&
-                personForm.controls.idNumber.invalid
-              "
-            >
-              <span *ngIf="personForm.controls.idNumber.errors?.required"
+            <mat-error *ngIf="showFormControlError('idNumber')">
+              <span *ngIf="showFormControlErrorType('idNumber', 'required')"
                 >Required</span
               >
-              <span *ngIf="personForm.controls.idNumber.errors?.pattern"
+              <span *ngIf="showFormControlErrorType('idNumber', 'pattern')"
                 >Only digits</span
               >
-              <span *ngIf="personForm.controls.idNumber.errors?.minlength"
+              <span *ngIf="showFormControlErrorType('idNumber', 'minlength')"
                 >Must 9 digits</span
               >
-              <span *ngIf="personForm.controls.idNumber.errors?.maxlength"
+              <span *ngIf="showFormControlErrorType('idNumber', 'maxlength')"
                 >Must 9 digits</span
               >
             </mat-error>
@@ -32,40 +27,30 @@
           <mat-form-field class="form-field">
             <mat-label>First Name</mat-label>
             <input matInput formControlName="firstName" required />
-            <mat-error
-              *ngIf="
-                personForm.controls.firstName.touched &&
-                personForm.controls.firstName.invalid
-              "
-            >
-              <span *ngIf="personForm.controls.firstName.errors?.required"
+            <mat-error *ngIf="showFormControlError('firstName')">
+              <span *ngIf="showFormControlErrorType('firstName', 'required')"
                 >Required</span
               >
-              <span *ngIf="personForm.controls.firstName.errors?.maxLength"
-                >Max 20 characters</span
-              >
-              <span *ngIf="personForm.controls.firstName.errors?.pattern"
+              <span *ngIf="showFormControlErrorType('firstName', 'pattern')"
                 >Only letters or '-' or space</span
+              >
+              <span *ngIf="showFormControlErrorType('firstName', 'maxlength')"
+                >Max 20 characters</span
               >
             </mat-error>
           </mat-form-field>
           <mat-form-field class="form-field">
             <mat-label>Last Name</mat-label>
             <input matInput formControlName="lastName" required />
-            <mat-error
-              *ngIf="
-                personForm.controls.lastName.touched &&
-                personForm.controls.lastName.invalid
-              "
-            >
-              <span *ngIf="personForm.controls.lastName.errors?.required"
+            <mat-error *ngIf="showFormControlError('lastName')">
+              <span *ngIf="showFormControlErrorType('lastName', 'required')"
                 >Required</span
               >
-              <span *ngIf="personForm.controls.lastName.errors?.maxLength"
-                >Max 20 characters</span
-              >
-              <span *ngIf="personForm.controls.lastName.errors?.pattern"
+              <span *ngIf="showFormControlErrorType('lastName', 'pattern')"
                 >Only letters or '-' or space</span
+              >
+              <span *ngIf="showFormControlErrorType('lastName', 'maxlength')"
+                >Max 20 characters</span
               >
             </mat-error>
           </mat-form-field>
@@ -78,13 +63,8 @@
                 >{{ item.professionName }}</mat-option
               >
             </mat-select>
-            <mat-error
-              *ngIf="
-                personForm.controls.professionId.touched &&
-                personForm.controls.professionId.invalid
-              "
-            >
-              <span *ngIf="personForm.controls.professionId.errors?.required"
+            <mat-error *ngIf="showFormControlError('professionId')">
+              <span *ngIf="showFormControlErrorType('professionId', 'required')"
                 >Required</span
               >
             </mat-error>

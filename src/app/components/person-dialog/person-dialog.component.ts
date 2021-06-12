@@ -69,6 +69,18 @@ export class PersonDialogComponent implements OnInit {
     });
   }
 
+  showFormControlError(key: string) {
+    return (
+      this.personForm.controls[key].touched &&
+      this.personForm.controls[key].invalid
+    );
+  }
+
+  showFormControlErrorType(key: string, error: string) {
+    const errors = this.personForm.controls[key].errors;
+    return errors && errors[error];
+  }
+
   doAction() {
     if (!this.personForm.valid) {
       return;
@@ -79,7 +91,7 @@ export class PersonDialogComponent implements OnInit {
 
     switch (this.data.action) {
       case 'Add':
-        this.http$ = this.dataService.updatePerson(
+        this.http$ = this.dataService.addPerson(
           <Person>(<Person>this.personForm.value)
         );
         break;
