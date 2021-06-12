@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { ActionState, ActionStates } from 'src/app/actionState';
 import Person from 'src/app/models/person';
 import Profession from 'src/app/models/profession';
 import { DataService } from 'src/app/services/data.service';
@@ -18,6 +20,12 @@ interface personDialogData {
 export class PersonDialogComponent implements OnInit {
   personForm: FormGroup = this.formBuilder.group({});
   professions: Profession[] = [];
+  actionState: ActionState = <ActionState>{
+    action: ActionStates.INIT,
+    message: '',
+  };
+
+  http$: Observable<any> | undefined;
 
   constructor(
     public dialogRef: MatDialogRef<PersonDialogComponent>,
@@ -43,36 +51,44 @@ export class PersonDialogComponent implements OnInit {
     if (!this.personForm.valid) {
       return;
     }
-    console.log(this.personForm.value);
+
+    this.actionState.action = ActionStates.IN_PROCESS;
+    this.actionState.message = "Please wait to complete you'r action...";
+
     switch (this.data.action) {
       case 'Add':
-        this.dataService
-          .addPerson(<Person>this.personForm.value)
-          .subscribe((data) => {
-            this.dialogRef.close();
-          });
+        this.http$ = this.dataService.updatePerson(
+          <Person>(<Person>this.personForm.value)
+        );
         break;
       case 'Update':
-        this.dataService
-          .updatePerson(<Person>{
-            personId: this.data.person!.personId,
-            ...this.personForm.value,
-          })
-          .subscribe((data) => {
-            this.dialogRef.close();
-          });
+        this.http$ = this.dataService.updatePerson(<Person>{
+          personId: this.data.person!.personId,
+          ...this.personForm.value,
+        });
         break;
       case 'Delete':
-        this.dataService.deletePerson(this.data.person!).subscribe((data) => {
-          this.dialogRef.close();
-        });
+        this.http$ = this.dataService.deletePerson(this.data.person!);
         break;
       default:
         break;
     }
+    this.http$!.subscribe(
+      (data) => {
+        this.dialogRef.close();
+      },
+      (err) => {
+        console.log(err);
+        this.actionState.message = err.error.title;
+        this.actionState.action = ActionStates.IS_FAILED;
+      }
+    );
   }
 
   closeDialog() {
+    this.actionState.action = ActionStates.INIT;
+    this.actionState.message = '';
+
     this.dialogRef.close({ event: 'Cancel' });
   }
 }
